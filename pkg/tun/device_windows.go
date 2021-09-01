@@ -142,6 +142,7 @@ $job | Receive-Job
 `, t.interfaceIndex, domain)
 	cmd := dexec.CommandContext(ctx, "powershell.exe", "-NoProfile", "-NonInteractive", pshScript)
 	cmd.DisableLogging = true // disable chatty logging
+	cmd.SysProcAttr.CreationFlags |= windows.CREATE_NEW_PROCESS_GROUP
 	dlog.Debugf(ctx, "Calling powershell's SetDNSDomain %q", domain)
 	if err := cmd.Run(); err != nil {
 		// Log the error, but don't actually fail on it: This is all just a fallback for SetDNS, so the domains might actually be working
